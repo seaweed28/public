@@ -1,0 +1,887 @@
+オラクル　ちょこっとリファレンス　https://oracle-chokotto.com/ora_const.html
+Oracle初心者でもスッキリわかる　https://sql-oracle.com/
+SE日記　https://oreno-it.info/archives/2461
+
+
+ascending order：昇順
+descending order：降順
+ascend：登る
+descend：下る
+
+
+
+◆データ検索
+
+
+
+●あいまい検索　ワイルドカード　複数文字、一文字
+・含まれる文字やら
+select * from movie where title like '%ス%'
+・含まれない
+select * from movie where title not like '%ス%'
+・_アンダーバーで任意の一文字
+select * from movie where id like '1_'
+
+●複数カラム検索
+SELECT * FROM movie WHERE title IN ('トトロ', 'グーニーズ');
+SELECT * FROM movie WHERE title LIKE '%ポーター%' OR title='エイリアン';
+
+select title from movie where (title like   '%ー%') and (title like '%ト%');
+select title from movie where title like   '%ー%' and title like '%ト%';
+select title, name from movie where title like   '%ー%' or name like '%ニ%';
+
+
+●重複除外
+SELECT DISTINCT name FROM vegetable;
+SELECT DISTINCT name, type FROM vegetable;　　複数指定
+
+●複数テーブル検索
+select aaa.id, bbb.name from aaa, bbb where aaa.id=bbb.id; 　重複するカラム名の場合はテーブル名も明記する
+select *  from aaa, bbb where aaa.id=bbb.id;
+
+
+
+SELECT fname, lname  
+FROM employees  
+WHERE (salary < 30000) OR (salary > 100000)  
+
+
+SELECT title_id, title  
+FROM titles  
+WHERE (title LIKE '%Cook%') AND   
+  (title LIKE '%Recipe%')  
+
+
+・NULL検索
+select * from emp where empname  is  null;　NULLなもの
+select * from emp where empname  is  not null;　NULLでないもの
+
+
+・昇順、降順
+
+SELECT * FROM aaa ORDER BY id ASC;　昇順（小さい順）
+SELECT * FROM AAA ORDER BY id;　ASCはデフォルトだからなくても同じ
+SELECT * FROM aaa ORDER BY id, name;　複数列（カラム）に対してソートする　最初のカラムから入れ子状態で実行される
+
+SELECT * FROM AAA ORDER BY id DESC;　降順（大きい順）
+
+SELECT * FROM aaa ORDER BY 2 ASC;　カラムの順番でソートされる　2番目のカラムでソート
+SELECT * FROM aaa ORDER BY 2,1;
+
+
+●JOIN 結合
+・内部結合（INNERは省略可能　JOIN　は　WHEREで代用出来る）
+SELECT
+ vegetable.name, vegetable_type.type_name, vegetable.price
+FROM
+ test.vegetable INNER JOIN test.vegetable_type
+ON
+ test.vegetable.type = test.vegetable_type.type
+ORDER BY
+ vegetable.price DESC;
+
+
+SELECT emp.empno, emp.empname, tokyo_aut.empno tokyo, osaka_aut.empno osaka
+FROM emp
+ JOIN tokyo_aut ON emp.empno = tokyo_aut.empno
+ JOIN osaka_aut ON tokyo_aut.empno = osaka_aut.empno 
+WHERE emp.empno < 'A999';
+
+ ↑↓　テーブル名を別名で使用
+
+SELECT e.empno, e.empname, t.empno tokyo, o.empno osaka
+FROM emp e 
+ JOIN tokyo_aut t ON e.empno = t.empno
+ JOIN osaka_aut o ON t.empno = o.empno 
+WHERE e.empno < 'A999';
+
+　↓　JOINでなくWHERE　で記述
+
+SELECT e.empno, e.empname, t.empno tokyo, o.empno osaka
+FROM emp e 
+ ,tokyo_aut t
+ ,osaka_aut o 
+WHERE e.empno < 'A999'
+ AND e.empno = t.empno
+ AND t.empno = o.empno 
+;
+
+
+● LEFT JOIN　（外部結合）LEFT　JOIN　が一般的　RIGHTはあまり使わない
+
+SELECT e.empno, e.empname, t.empno tokyo, o.empno osaka
+FROM emp e 
+ LEFT JOIN tokyo_aut t ON e.empno = t.empno
+ LEFT JOIN osaka_aut o ON e.empno = o.empno 
+WHERE e.empno < 'A999';
+
+
+●サブクエリ（検索）
+SELECT
+  B.category_name
+FROM
+   (SELECT category_cd FROM syohin_mst GROUP BY category_cd) A
+  ,name_mst B
+WHERE
+  A.category_cd = B.category_cd
+;
+
+
+●EXISTS 
+※同じ表の場合、別名を指定しないとダメなようだ
+SELECT empno,empname FROM emp e1
+WHERE EXISTS 
+ (SELECT * FROM emp e2
+  WHERE e1.empno = e2.managerno
+ );
+
+
+
+●MERGE
+MERGE INTO emp5
+  USING emp 
+  ON (emp5.empno = emp.empno) 
+  WHEN MATCHED THEN
+    UPDATE SET 
+      emp5.empname = emp.empname
+  WHEN NOT MATCHED THEN
+    INSERT (emp5.empno, emp5.empname)
+    VALUES (emp.empno, emp.empname)
+
+
+
+●between
+select name, price from vegetable where price between 150 and 198; 
+両方とも数は含まれていた。以上、以下　後で調べる
+
+
+
+●CASE
+
+
+select
+ s_no,
+case 
+ when reader_f=1 then s_name || '（委員）'
+ when reader_f=2 then s_name || '（書記）'
+end s_name, 
+reader_f
+from emp5;
+
+
+
+SELECT
+s_no,
+CASE
+ WHEN reader_f = 1 AND gender = '男' THEN s_name || '/学級委員（男子）'
+ WHEN reader_f = 1 AND gender = '女' THEN s_name || '/学級委員（女子）'
+ ELSE s_name
+ END s_name,reader_f
+FROM emp5;
+
+
+select
+s_no, s_name,
+case
+ when s_name like '佐藤%' then '〇'
+ when s_name like '加藤%' then '□'
+ else null
+end 見出し（好きなものでオケ　×数字先頭）
+from emp5;
+
+
+select
+s_name,
+case
+ when test>=80 then 'A'
+ when test<80 and test>=60 then 'B'
+ else 'C'
+end テスト判定
+from emp5;
+
+
+・関数を使いつつ
+select
+ sum(case when gender='男' then 1 else 0 end) 男子の数,
+ sum(case when gender='女' then 1 else 0 end) 女子の数
+from emp5;
+
+
+
+
+◆テーブル内容操作（行の挿入、変更、削除）
+
+●INSERT
+・行の挿入
+insert into t01 (id) values (34);
+
+insert into TEST.T01(id, name)
+values(3, 'aaa');
+
+insert into TEST.T01 (id, name, title)
+values (5, 'ジェイソン・ステイサム', 'トランスポーター');
+
+
+
+insert into vegetable select max(type) +1, 'aaa', 10 from vegetable;
+
+
+
+
+・値だけの場合は、全部指定する
+insert into TEST.T01 values(
+28, 'ファルコン','');
+
+
+
+
+
+・サブクエリ（複問い合わせ）からのインサート
+insert into bbb select * from aaa;
+　aaa から　bbbに入れる　表自体が無い場合はエラー　列が同じ
+insert into aaa select id, name from bbb;
+×　insert into aaa select (id, name) from bbb;　（）はいらない
+insert into aaa (name) select id from bbb;　型が違うけど入れられちゃった　number→varchar
+×　insert into aaa (id) select name from bbb;　varchar→number だめだった
+
+
+
+・複数行insert
+insert all
+into test.vegetable (type, name, price) values ( 3, 'えだまめ', 289)
+into test.vegetable values ( null, 'リンゴ', 198)
+into test.vegetable values ( null, 'イチゴ', 230)
+into test.vegetable values ( null, 'しめじ', 198);
+into test.vegetable values ( null, 'ミカン', 198);
+into test.vegetable values ( null, 'えのき', 198);
+select * from dual;
+
+
+
+
+
+●変更
+update t01 set name='あああ',title='いいい' where id=34;
+update vegetable set type='2' where name='えのき' or name='しめじ';
+update emp5 set empno=null where empno is not null
+
+
+
+
+
+●削除
+・レコードの削除
+delete from TEST.T01 where TITLE is null; 　TITLEがNULLのを消す　NULLの時だけ、この書き方
+delete from vegetable where name='えのき';
+
+
+
+●データ内容表示
+select id from test.t01;　スキーマから
+select * from t01;
+
+
+
+・件数
+select count(type) from vegetable_type;
+select count(type_name) from vegetable_type;
+select count(*) from vegetable;　ワイルドカードもオケ　パフォーマンスは　キー項目の方が良い
+
+count は一個のカラムに対してのみ
+
+×　select count(type, type_name) from vegetable_type;
+ORA-00909: 引数の個数が無効です。
+
+・GROUP BY　同じデータの場合はひとまとめ
+・HAVING ↑　グループイングした項目に対するデータ抽出条件
+select name, count(type) from vegetable group by ＊name having count(name) > 2;
+select name, count(type) AS "数" from vegetable group by name having count(name) >= 2;　　カラムの見出し：別名
+select type, count(type) 見出し from vegetable group by ＊type having count(name) > 2;
+select ＊type, count(type) 見出し from vegetable group by ＊name having count(name) > 2;　エラー　＊が違うから（？）
+
+select name, count(type) from vegetable group by name;
+select name, count(type) from vegetable group by name;　NULLは数えられてない
+× select name, count(type) from vegetable group by type;　グループ分けが違うからみたい
+
+
+
+●文字の連結
+select concat ('aaa', 'ccc') from dual;
+select 'abc' || 'efg' contitle from dual;
+select 'aaa' || 'bbb' as 見出し from dual;
+select 'aaa' || 'bbb' from dual;
+
+select concat(type, type_name) from vegetable_type;
+select concat(type, type_name) ここに見出し from vegetable_type;
+
+select concat(type, name) conf from vegetable;
+select concat(type, '－つけたし－' || type_name) みだし from vegetable_type;
+
+select '12' || '234' || '4567' from dual;
+select '12' || '234' || '4567' title from dual;
+
+×　select type, name concat(type, name) conc from vegetable_type;
+×　select concat(type, ' 間 ',  type_name) from vegetable_type;　文字の連結は　|| で
+〇select concat(type, ' 間 ' ||  type_name) from vegetable_type;
+
+
+
+
+
+
+
+
+◆カラム（名前、種類）に対する変更
+
+●カラム
+
+・追加
+alter table t01 add (name varchar2(20), title varchar2(20));
+
+・名前変更
+alter table emp5 rename column empname to name;
+
+・型変更　varchar→number 簡単　逆はデータを一旦削除してから
+alter table t01 modify ( title varchar2(255));
+alter table emp5 modify (empno number(5));
+
+・削除
+ALTER TABLE emp DROP column empno;
+制約がある場合
+ALTER TABLE emp DROP column empno CASCADE CONSTRAINTS;
+複数削除
+ALTER TABLE bbb DROP (id, NAME);
+
+
+・カラムを未使用にする　※データへはアクセス出来なくなる
+alter table emp5 set unused column gender;
+
+・unsued　にしたカラムを実際に削除
+alter table emp5 drop unused columns
+
+
+
+
+
+・NULL制約
+付ける
+alter table bbb modify name not null;
+削除
+alter table bbb modify name null;
+× ALTER TABLE bbb MODIFY (id, name) NULL;　複数はダメみたい
+
+
+・プライマリーキー
+複数設定
+alter table vegetable_type add constraint pk primary key (type, type_name );
+削除
+alter table emp drop constraint pk;　NULL制約解除はプライマリーキー指定を削除してから
+
+
+
+
+◆テーブル操作（作成、変更、削除、一覧表示）
+●作成
+CREATE TABLE {テーブル名} 
+ (
+ {列1} {列1のデータ型},
+ {列2} {列2のデータ型} ,
+ {列3} {列3のデータ型} 
+ ) 
+TABLESPACE {表領域名};
+
+create table test(id number(2,0));
+create table aaa (aaa number(3));
+
+create table vegetable_type(　←スキーマ指定なくてもオケ
+type number(10),
+type_name varchar2(20)
+);
+
+create table TEST.COLOR(　←スキーマ付き
+ id number(10),
+ name varchar2(255)
+);
+
+
+
+
+
+・コピーして作成
+create table emp4 as select * from emp;　全カラムコピー
+create table emp5 as select empno, empname from emp;　指定カラム
+
+
+
+●テーブル名変更
+alter table スキーマ.t01 rename to t02（テーブル名のみ　スキーマ無し）;
+
+
+●テーブル別名　※注意
+AS　は付けない
+
+〇　SELECT * FROM aaa ttt;　オケ
+×　SELECT * FROM aaa AS ttt;　エラー
+　→ORA-00933: SQLコマンドが正しく終了されていません。
+
+
+
+●テーブル削除（Oracle10gからゴミ箱あり）
+drop table bbb;　ゴミ箱に入っている
+DROP TABLE table1 PURGE;　完全に削除
+
+
+●テーブル一覧表示
+desc テーブル名
+
+・接続ユーザーのテーブル表示
+select * from tab;
+select table_name from user_tables;
+select table_name from user_tables order by table_name;
+
+・テーブル名指定
+select table_name from user_tables where table_name = 'T01';　大文字、小文字区別　シングルコーテーション必要
+select table_name from user_tables where table_name = 'VEGETABLE';
+
+×・オーナー指定　出来なかった
+　select owner, table_name, column_name, column_id from all_tab_columns where owner='test';
+
+
+
+
+●●●制約
+
+・列制約
+CREATE TABLE SHAIN_MASTER(
+  id          VARCHAR2(10)　PRIMARY KEY,　主キー：重複不可、NULL不可
+  name        VARCHAR2(10)　NOT NULL,　　　重複可、NULL不可
+  tel         VARCHAR2(10)　UNIQUE,　　　重複不可、NULL可
+  age         NUMBER(2)　CHECK(AGE BETWEEN 18 AND 65),　１８～６５のみ可
+  busho_cd    CHAR(2)　REFERENCES busho_master(busho_cd)　busho_masterテーブルのbusho_cdにある値のみ設定可
+);
+
+
+・表制約（名前を付けて指定する）
+※NOT NULL　は表制約で定義出来ない　列制約のみ
+
+CREATE TABLE SHAIN_MASTER(
+  id1         VARCHAR2(5),
+  id2         VARCHAR2(10),
+  name        VARCHAR2(10),
+  tel         VARCHAR2(10),
+  age         NUMBER(2),
+  busho_cd    CHAR(2),
+  CONSTRAINT  cons_p1 PRIMAEY KEY(id1, id2),
+  CONSTRAINT  cons_u1 UNIQUE(tel),
+  CONSTRAINT  cons_c1 CHECK(age BETWEEN 18 AND 65),
+  CONSTRAINT  cons_f1 FOREIGN KEY(busho_cd)
+                          REFERENCES busho_master(busho_cd)
+);
+
+
+・プライマリーキーの設定
+
+CREATE TABLE candidate (
+ cid INTEGER PRIMARY KEY,　←この場合、プライマリーキー名は　PRIMARY KEY　ってなってる　1キーのみ可
+ firstname VARCHAR(20),
+ lastname VARCHAR(20)
+);
+
+CREATE TABLE emp2(
+ no NUMBER(10),
+ name VARCHAR2(3,0),
+ gender VARCHAR2(50),
+ CONSTRAINT pkeyname PRIMARY KEY(no, name)　←プライマリキー　複数指定可
+);
+
+
+・NULL制約
+create table vegetable (
+ type number(3) not null,　　NULL制約付き
+ name varchar2(20),
+ price number(10)
+);
+
+
+
+http://www.ne.jp/asahi/hishidama/home/tech/oracle/constraint.html#user_constraints
+・表示
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE
+FROM USER_CONSTRAINTS
+WHERE TABLE_NAME='CANDIDATE';
+
+・追加
+ALTER TABLE emp ADD CONSTRAINT const1 UNIQUE(empno);
+
+
+・削除
+ALTER TABLE テーブル名 DROP CONSTRAINT 制約名
+ALTER TABLE テーブル名 DROP PRIMARY KEY;
+
+ALTER TABLE emp DROP UNIQUE(empno);　　制約種類とカラム名　指定
+ALTER TABLE emp DROP CONSTRAINT const1;　制約名で削除（const1）
+
+
+・制約の無効、有効化
+ALTER TABLE テーブル名 [ENABLE/DISABLE] CONSTRAINT 制約名;
+ALTER TABLE emp  ENABLE CONSTRAINT const1;
+ALTER TABLE emp  DISABLE CONSTRAINT const1;
+
+
+
+
+
+●コメント　
+comment on table aaa is 'testaaa'
+comment on column vegetable.type is '野菜の種類' 
+comment on column test.vegetable.type is 'type a'
+
+COMMENT ON TABLE viewname IS 'comment';
+COMMENT ON COLUMN viewname .column IS 'comment';
+
+
+・複数実行
+comment on column emp5.s_no is '生徒番号'
+/
+comment on column emp5.s_name is '生徒名'
+/ 
+comment on column emp5.gender is '性別'
+/
+comment on column emp5.test is 'テスト結果'
+/
+
+
+
+●VIEW
+・作成
+CREATE VIEW viewname AS SELECT * FROM tablename;　新規作成のみ
+CREATE OR REPLACE VIEW viewname AS SELECT * FROM tablename;　上書きも可
+
+SELECT * FROM ALL_VIEWS;　全部のビューを表示
+SELECT VIEW_NAME FROM USER_VIEWS WHERE VIEW_NAME LIKE '%TEST%';
+SELECT VIEW_NAME FROM   USER_VIEWS ORDER BY VIEW_NAME;
+
+SELECT * FROM testview;　ふつーに見れる
+DROP VIEW view_name;
+
+SELECT TEXT FROM USER_VIEWS
+WHERE VIEW_NAME = 'ビュー名';　　ビュー名は大文字
+
+・ビューの内容を表示する
+SELECT TEXT FROM USER_VIEWS WHERE VIEW_NAME='TESTVIEW';
+　→SELECT "ID","NAME" FROM aaa　こんな感じ
+
+
+●別名（エイリアス） AS
+分かりやすくなる！
+SELECT id AS "ばんごう", name AS "お名前" FROM aaa;　表示を変更出来る　変更内容は　""　ダブルクォートで括る
+
+
+
+
+
+
+
+●色々表示
+
+
+・接続者
+select username from user_users;
+
+・ユーザー情報
+select * from all_users;　全ユーザー
+select username from all_users;　名前
+select user_id from all_users;　ID
+select created from all_users;　作成日時
+
+
+・グローバルデータベース名
+select * from global_name;
+
+・ユーザー名一覧
+select username from all_users;
+
+
+
+・接続しているサーバーの情報表示
+https://www.projectgroup.info/tips/Oracle/SQL/SQL000023.html
+select sys_context('userenv', 'current_schema' ) from dual;　
+select sys_context('userenv', 'host' ) from dual;
+select sys_context('userenv', 'language') from dual;
+select sys_context('userenv', 'server_host') from dual;
+select sys_context('userenv', 'session_user' ) from dual;
+
+select instance_name from v$instance;
+　ORA-00942: 表またはビューが存在しません。
+　　出来ない場合は↓
+select sys_context('USERENV','INSTANCE_NAME') from dual;
+
+
+
+
+・ゴミ箱内容表示
+select * from recyclebin;
+
+・テーブルだけ表示
+show recyclebin;
+
+SELECT OBJECT_NAME
+      ,ORIGINAL_NAME
+      ,DROPTIME
+FROM   USER_RECYCLEBIN
+WHERE  TYPE = 'TABLE';
+
+
+・ゴミ箱から元へ戻す
+flashback table "EMP5" to before drop;　別名でなくてもオケ　ObjectBrowserだとSQLは出来ない　コンテキストメニューで実行する
+flashback table "BIN$+t7Yq5AtTlmUo4SW1sRjNw==$0" to before drop;
+
+
+・ゴミ箱を空へ
+purge recyclebin;
+
+
+
+●ファイルへの操作
+・保存　直前に実行した内容が保存される
+save フルパス\ファイル名　   拡張子省略：.sql
+save フルパス\ファイル名 replace（上書き）　か　append（どんどん追記）
+
+・外部ファイル読み込み＆実行
+@フルパス\test.sql
+途中に改行入れない
+
+最後に　exit　を付けなくていい（”付ける”と書いてあるHPあり）
+
+
+
+★★★エラー対処
+
+
+★★★コマンドプロンプト　文字コード変更★★★
+chcp で表示と変更  　引数で起動：/K chcp 65001
+Shift-JIS　932
+UTF-8 65001
+
+★★★ObjectBrowserエラー集★★★
+・SQL入力が開けない時　メニューバー/表示/SQL実行
+　→管理者権限で起動しなおす
+
+
+★★★エラー集★★★
+・テーブル表示：テーブル名は小文字
+〇select table_name from user_tables where table_name='MOVIE';
+×select table_name from user_tables where table_name='movie';
+　→レコードが選択されませんでした。
+
+
+★★★エコー★★★
+set echo on
+set echo off
+
+
+
+・テーブル名変更：変更後の名前部分には、スキーマ不要
+×alter table test.movie rename to test.movie01;
+　→ORA-14047: ALTER TABLE|INDEX RENAMEは他の操作と結合できません
+〇alter table test.movie rename to movie01;
+　→表が変更されました。
+
+
+◆その他
+●画面クリア
+cl scr
+clear screen
+
+●起動
+sqlplus / as sysdba
+sqlplus　→ユーザー名、パスワード
+sqlplus ユーザー名/パスワード@orcl
+
+
+●接続の人を変える
+connect / as sysdba 
+connect ユーザー名
+
+
+●権限を与える
+・接続権限
+grant connect, resource to ユーザー名;
+grant create session to ユーザー名;
+
+・オブジェクト権限
+grant select any table, insert any table to ユーザー名;
+grant delete any table, update any table to ユーザー名;
+
+https://oracle-chokotto.com/ora_auth.html
+GRANT [システム権限名] TO [ユーザ名] [WITH ADMIN OPTION];
+GRANT [システム権限名] TO [ロール名];　ロール権限付与
+GRANT [ロール名] TO [ユーザ名] [WITH ADMIN OPTION];　ロール付与
+
+
+
+●VIEWの権限
+GRANT CREATE ANY VIEW TO test;
+CREATE ANY VIEW	任意のスキーマにビューを作成する権限
+CREATE VIEW	自スキーマにビューを作成する権限
+DROP ANY VIEW	ビューを削除する権限
+UNDER ANY VIEW	ビューのサブビューを作成する権限
+
+●接続設定ファイル
+unix系
+$ORACLE_HOME/network/admin/tnsnames.ora
+Windows
+%ORACLE_HOME%/NETWORK/ADMIN/tnsnames.ora
+
+
+
+
+
+
+
+Windows SID確認　環境変数のPathに書いてある
+
+
+◆◆◆ObjectBrowser
+～～～
+
+●条件（テーブルを開く/データタブ/条件入力/左側　再生▽ボタン）
+
+name = 'a';   
+name IN ('えだまめ', '大根', 'しめじ')
+name LIKE '%めじ%'
+name LIKE '%めじ%' or name like '%根%'
+name  not LIKE '%めじ%' and not name like '%根%' and not name  is null and not type is null
+name LIKE '%めじ%' or name like '%根%'
+
+
+※注意
+count(*)　は使用できない
+
+
+●スクリプト実行
+行末の　セミコロンいらない　スラッシュ
+
+
+・ObjectBrowserでスクリプト実行する場合
+ セミコロンがいらない　先頭にスラッシュをつける
+ inseret all のやり方は出来ない
+insert into test.aaa ( *** ) values ( *** )
+/
+insert into test.aaa ( *** ) values ( *** )
+/
+
+
+●メニューバー/表示/SQL実行　※注意点
+・テーブル作成時
+× name VARCHAR2(3,0)　←この書き方だとエラー
+〇 name VARCHAR2(3)　　←オケ
+
+
+
+●件数表示
+データタブ/カラム名　右クリック
+
+
+
+～～～
+
+
+◆◆◆システム表示
+select sysdate from dual;　日付
+select sysdate + 1/24 from dual; 1時間足す　
+
+
+
+
+◆◆◆関数
+https://oracle-chokotto.com/ora_function.html
+
+https://oracle-chokotto.com/ora_format.html
+フォーマット形式　システム時間
+
+・to_char
+select to_char(sysdate, 'YYYY MM DD AM') from dual;
+　→2019 10 23 午後
+
+select to_char(sysdate, 'YYYY/MM/DD HH24:MI:SS') from dual;
+select to_char(sysdate, 'YYYY/MM/DD HH24:MI:SS') from dual;
+　→2019/10/25 11:38:11
+
+select to_char(sysdate +1/24, 'YYYY/MM/DD HH24:MI:SS') from dual;　1時間足している
+　→2019/10/25 12:38:39
+
+
+・sum
+select sum(550+ 250) from dual;
+　→800
+select sum(550 - 250) from dual;
+　→300
+select sum(550 * 20) from dual;
+　→11000
+select sum(550 / 20) 計算結果 from dual;;
+　→27.5
+
+from　の前の見出しになる部分は数字だとダメ。　数字以外の半角、全角はオケ
+select sum(price) 全合計（見出し） from vegetable;
+select sum(price) 大根の合計見出し from vegetable where name='大根';
+select name, sum(price) 合計見出し3 from vegetable  where price=198　group by name;
+select name, sum(price) 合計見出し3 from vegetable  where price<100　group by name;
+
+
+・round 四捨五入
+select round(10.5) from dual;
+　→11
+select round(10.4) from dual;
+　→10
+指定丸め
+select round(10.4258, 1) from dual;
+　→10.4
+select round(10.425, 2) from dual;　小数点第2位までを表示するように丸め
+　→10.43
+select round(10.4258, 3) from dual;
+　→10.426
+
+select round(237, -1) from dual;
+　→240
+select round(237, -2) from dual;
+　→200
+select round(237, -3) from dual;
+　→0
+
+
+●DML,DDL,DCL、トランザクション処理
+https://oreno-it.info/archives/694
+DML(Data Manipulation Language)
+DMLというのは、データ操作言語のことです。
+主にデータの検索やデータの追加、更新、削除などを行います。
+・データの検索：SELECT
+・データの追加：INSERT
+・データの更新：UPDATE
+・データの削除：DELETE
+
+DDL(Data Definition Language)
+DDLとはデータ定義言語のことです。
+主に、オブジェクトの作成や更新、削除を行います。
+・オブジェクトの作成：CREATE
+・オブジェクトの変更：ALTER
+・オブジェクトの削除：DROP
+
+DCL(Data Control Language)
+DCLとは、データ管理言語のことです。
+主に、アクセス権限の付与や削除を行います。
+・権限の付与：GRANT
+・権限の剝奪：REVOKEなどです。
+
+トランザクション制御
+トランザクション制御とは、トランザクション（データの更新処理など）の確定や取り消しなどを行います。
+・確定：COMMIT
+・取り消し：ROLLBACK
+
+
+
+
+●ディレクトリ作成
+CREATE OR REPLACE DIRECTORY dp_dir AS 'C:\Oracle\dump';
+
+
