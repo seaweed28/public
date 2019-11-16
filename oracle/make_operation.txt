@@ -1,0 +1,45 @@
+sqlplus / as sysdba　ログイン
+
+system にユーザー作成権限を与える
+grant create user to system;　ユーザー：system　にクリエイト権限を与えた
+grant alter user to system;
+grant drop user to system;
+
+systemで繋ぎ直し
+connect system
+
+そのままだと、ROOT接続だから、プラガブルDBへ接続し直す
+接続状態確認
+SHOW CON_NAME
+　→CDB$ROOT　とか出る　ROOT　接続
+
+PDBの状態確認（プラガブルDBの状態を確認する）
+SHOW PDBS
+　→PDBORCL　MOUNTED　ってなってたらまだ起動していない
+　→PDBORCL　READ　WRITE　起動中
+
+PDBの起動
+ALTER PLUGGABLE DATABASE orclpdb OPEN;
+
+PDBへの接続
+ALTER SESSION SET CONTAINER = orclpdb;
+　→セッションが変更されました
+
+状態確認
+SHOW CON_NAME
+
+その後、ユーザー作成
+CREATE USER ユーザー名
+IDENTIFIED BY パスワード
+DEFAULT TABLESPACE users
+TEMPORARY TABLESPACE temp;
+
+●権限付加
+grant connect, resource to ユーザー名；	接続権限
+grant dba to ユーザー名;	（オブジェクト権限）なんでもロール付加
+grant unlimited tablespace to ユーザー名;	表領域使用量を無制限
+GRANT CREATE TABLE TO SATOU;	テーブル作成
+
+●ユーザー削除
+drop user ユーザー名　cascade;
+
