@@ -1,0 +1,242 @@
+システム権限
+　ユーザー作成権限とか、テーブル作成権限とかの事
+オブジェクト権限
+　テーブル作成、レコード作成とかの事
+
+
+RESTRICTED：制限
+エンティティ：実態
+
+プラガブル　orclpdb
+アノニマスが入っている表スペース　 SYSAUX
+
+employees：従業員
+pluggable：接続可能
+サマリー：まとめ、概要、要約
+
+
+
+★手順
+Oracleインスタンスへのログイン　
+ sqlplus / as sysdba  アドミニスト権限でログイン
+
+☆接続が切れちゃったら
+SP2-0640: 接続されていません。
+conn / as sysdba
+
+●プラガブルDB関係
+
+（プラガブル・データベース（PDB）に接続しなおす）
+コンテナ名を表示
+show con_name;
+　→CDB$ROOT　ルートに接続されている
+
+
+１）PDBの名前と読み書き設定を調べる
+select name, open_mode from v$pdbs;
+　→mount とかなっている　この場合は起動していない
+
+プラガブル・データベース　表示
+show pdbs;
+
+
+プラガブル・データベース　オープン
+alter pluggable database orclpdb open;
+alter pluggable database hogehoge:orclpdb（all　で全部起動） open;
+
+
+
+
+２）PDBの名前と読み書き設定を調べる
+select name, open_mode from v$pdbs;
+　→read write になった
+
+
+接続先コンテナを変更
+alter session set container = orclpdb;
+alter session set container = pdbの名前;
+
+
+
+PDBの停止
+
+alter pluggable database all close immediate;
+alter pluggable database orclpdb close immediate;
+
+
+
+●接続ユーザーの切り替え
+connect system
+connect / as sysdba
+conn　エンターで、ユーザー、PW入力
+conn ユーザー名/パスワード@orclpdb
+sqlplus ユーザー名/パスワード　＠以降いらないぽい
+
+
+
+
+
+
+
+https://www.shift-the-oracle.com/privilege/system-privilege-list.html
+権限名：user　権限のオプション：create, alter, drop 
+GRANT [サブタイプ] {権限名} TO {ユーザー名}
+
+grant create user to system;　ユーザー：system　にクリエイト権限を与えた
+grant alter user to system;
+grant drop user to system;
+
+
+
+
+テーブルの権限　まとめて
+grant select, insert,update,delete on ユーザー名."table01" to ユーザー名;
+
+
+
+●DBA（データベース管理者のこと）
+GRANT ロール名 TO ユーザ名
+・DBAロールの貸与
+grant dba to ユーザー名;
+grant dba to system;
+・表領域使用量を無制限
+grant unlimited tablespace to ユーザー名;
+grant unlimited tablespace to system;
+grantcreate session
+
+
+
+
+●システム系　コマンド
+
+
+アカウントの名前と状態が確認できます。
+ SELECT username, account_status FROM dba_users;
+
+
+
+×できなかった 出力　ファイルへ
+https://www.projectgroup.info/tips/Oracle/Oracle_000003.html
+セット　spool c:\test\test.txt
+右端スペース削除　　set trimspool on
+出力停止　　spool off
+
+
+
+●ユーザー作成
+rootコンテナ　ユーザーは作成出来ない
+　エラー：ORA-65096: 共通ユーザーまたはロール名が無効です
+
+CREATE USER ユーザー名
+IDENTIFIED BY パスワード
+DEFAULT TABLESPACE users
+TEMPORARY TABLESPACE temp;
+
+いちお　↑　のがデフォルトに近い
+CREATE USER ユーザー名
+IDENTIFIED BY パスワード
+DEFAULT   TABLESPACE USERS
+TEMPORARY TABLESPACE TEMP
+QUOTA 10M ON USERS;
+
+
+●権限追加
+ユーザーの権限
+接続権限
+grant connect to ユーザー名;
+全ての表領域に対する無制限の表領域割り当て制限
+grant unlimited tablespace to ユーザー名;
+
+接続権限
+grant connect, resource to ユーザー名;
+
+ユーザー削除
+drop user "GSMADMIN_INTERNAL" cascade;
+drop user "DVSYS" cascade;
+
+
+
+テーブル一覧
+select table_name from all_tables
+
+
+SID確認
+select instance_name from v$instance;
+select instance_name from oracle_sid;
+　→表またはビューが存在しません。　まだ作ってないから
+
+
+
+
+●グローバルデータベース名
+確認
+select * from global_name;
+　→ORCL
+
+変更
+ALTER DATABASE RENAME GLOBAL_NAME TO sales.itref.fc2web.com
+
+
+
+
+
+
+
+
+●オブジェクト操作
+
+select * from TEST."type";
+select "name" from "type";
+select count("name") from "type";
+
+vegetable 小文字のカラム名の場合は　””で囲む
+select count("price") from "vegetable";
+
+VEGETABLE　大文字の場合は　””　で囲まなくてオケ
+select "price","name" from vegetable;
+
+
+
+
+
+
+
+
+●リスナー　DOS上でやる　sqlplus 上じゃない
+
+起動
+lsnrctl start
+
+停止
+lsnrctl stop
+
+
+
+●パスワード
+なお、パスワードは以下を満たさないと設定できませんのでご注意を。
+6文字以上
+小文字および大文字のアルファベット、数字、記号が1つ以上
+ユーザー名、Internalという単語は含められない
+
+
+●表領域　あの　*.DBF ファイルがそう
+スキーマ　ユーザーのカバンやら、ユーザーそのものやら　そんな感じ
+
+
+
+
+■Oracle　仕組み
+CDB（コンテナデータベース）　状態確認：select instance_name,status from v$instance;
+　PDB（プラガブルデータベース）　状態確認：show pdbs　（こっちでもオケ：select con_id,name,open_mode from v$pdbs;）
+　　スキーマ
+　　　テーブル
+の順で上に乗ってる
+
+CDBは　下の3つのコンテナから構成されている
+　CDB$ROOT（ルート）　CDB　1つに1つ　オブジェクトの追加や削除は出来ない
+　PDB$SEED（シード）　CDB作成時に1つ作られる　PDBの雛型　※読み取り専用
+　PDB（プラガブル・データベース）　マルチテナント・アーキテクチャに統合するデータベースに相当
+　　PDB毎にスキーマや、表領域の独立した名前空間を持つ
+　　同一のCDB内の複数のPDBで同じ名前のスキーマや表領域を使用出来る
+
+
