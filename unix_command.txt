@@ -1,7 +1,69 @@
-tar 解凍・圧縮
+●shell
+
+
+
+●shellスクリプトの実行
+
+sh test.sh
+bash test.sh
+
+・管理者権限で実行
+
+sudo sh test.sh
+　→パスワードの入力を求められる
+
+sudo bash test.sh
+
+（●実行権限を付けて実行）
+chmod +x test.sh
+./test.sh
+
+
+
+#!/bin/sh
+DATETIME=`date +%Y%m%d_%H%M%S_%3N`
+echo $DATETIME
+
+
+echo `date +%Y%m%d_%H%M%S_%3N`
+×　echo 'date +%Y%m%d_%H%M%S_%3N'
+×　echo "date +%Y%m%d_%H%M%S_%3N"
+×　echo "date"+`%Y年%m月%d日`
+
+echo `date +%Y%m%d_%H%M%S`
+echo `date +%Y%m%d`
+echo `date +%Y年%m月%d日`
+
+
+
+
+
+
+●コマンドのパスを表示
+which echo
+ /bin/echo
+
+which curl
+ /usr/bin/curl
+
+
+which cat
+
+・すべてのフルパスを表示する　-a オプション
+which -a ls
+
+
+●表示を1ページに抑える
+cat example.html | more
+　| ：パイプ
+ more　：一画面ずつ
+
+
+
+●tar 解凍・圧縮
 https://webkaru.net/linux/tar-command/
 
-UNIX　Windows　コマンド対応表
+●UNIX　Windows　コマンド対応表
 https://qiita.com/asmin/items/d53e71ed98a377ca7823
 https://kunst1080.hatenablog.com/entry/2013/11/16/234516
 https://win.just4fun.biz/?%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88/%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%80%81PowerShell%E3%80%81Linux%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E5%AF%BE%E5%BF%9C%E8%A1%A8
