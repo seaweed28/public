@@ -2,12 +2,12 @@ catalina.outの出力先変更
 https://qiita.com/hidekatsu-izuno/items/ab604b6c764b5b5a86ed
 
 ログファイル	出力内容	設定箇所
-catalina.out6	標準出力(catalina.logの内容を含む)＋標準エラー出力	catalina.sh
+catalina.out6	標準出力(catalina.logの内容を含む)＋標準エラー出力	bin/catalina.sh
 catalina.YYYY-MM-DD.log	Tomcat自体のログ	logging.properties
-localhost.YYYY-MM-DD.log	ホスト共通の ServletContext#log	logging.properties
-manager.YYYY-MM-DD.log	manager webapp の ServletContext#log	logging.properties
-host-manager.YYYY-MM-DD.log	host-manager webapp の ServletContext#log	logging.properties
-localhost_access_log.YYYY-MM-DD.txt	ホスト共通の アクセスログ	server.xml
+localhost.YYYY-MM-DD.log	ホスト共通の ServletContext#log	conf/logging.properties
+manager.YYYY-MM-DD.log	manager webapp の ServletContext#log	conf/logging.properties
+host-manager.YYYY-MM-DD.log	host-manager webapp の ServletContext#log	conf/logging.properties
+localhost_access_log.YYYY-MM-DD.txt	ホスト共通の アクセスログ	conf/server.xml
 
 
 
