@@ -1,3 +1,31 @@
+catalina.outの出力先変更
+https://qiita.com/hidekatsu-izuno/items/ab604b6c764b5b5a86ed
+
+ログファイル	出力内容	設定箇所
+catalina.out6	標準出力(catalina.logの内容を含む)＋標準エラー出力	bin/catalina.sh
+catalina.YYYY-MM-DD.log	Tomcat自体のログ	logging.properties
+localhost.YYYY-MM-DD.log	ホスト共通の ServletContext#log	conf/logging.properties
+manager.YYYY-MM-DD.log	manager webapp の ServletContext#log	conf/logging.properties
+host-manager.YYYY-MM-DD.log	host-manager webapp の ServletContext#log	conf/logging.properties
+localhost_access_log.YYYY-MM-DD.txt	ホスト共通の アクセスログ	conf/server.xml
+
+
+
+●telnet　で接続
+
+・エラー
+Trying 127.0.1.1...
+telnet: Unable to connect to remote host: Connection refused
+
+・エラー
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+500 OOPS: priv_sock_get_cmd
+Connection closed by foreign host.
+
+
+
 ●shell
 
 
