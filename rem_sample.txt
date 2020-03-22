@@ -24,12 +24,28 @@ public class Sample {
 				//				if ( ! "rem".equals(data[0])) {
 				if (!data[0].contains("rem") && !data[0].contains("//")) { // ”rem”が含まれている or ”//”だったら読み込まない
 					for (int i = 0; i < 3; i++) {
-						if (i == 2 && "000".equals(data[i])) {
-							System.out.print("STATUS_000!");
-							break;
-						} else if (i == 2 && "00".equals(data[i])) {
-							System.out.print("STATUS_ゼロ２個!");
-							break;
+						/*
+						  						if (i == 2 && "000".equals(data[i])) {
+													System.out.print("STATUS_000!");
+													break;
+												} else if (i == 2 && "00".equals(data[i])) {
+													System.out.print("STATUS_ゼロ２個!");
+													break;
+												}
+						*/
+						if (i == 2) {
+							switch (data[i]) {
+							case "000":
+								System.out.print("STATUS_000!");
+								break;
+							case "00":
+								System.out.print("STATUS_ゼロ２個!");
+								break;
+							default:
+								System.out.print("---");
+								break;
+							}
+
 						} else {
 							System.out.print(data[i]);
 							System.out.print("\t");
