@@ -1,0 +1,175 @@
+
+RDBで動的検索条件が必要な場合、動的SQLを利用すべき理由
+https://www.nuits.jp/entry/2017/11/26/180319
+
+
+Google先生
+SQL CASE SELECT
+https://www.google.com/search?q=SQL+CASE+SELECT&oq=sql+case+select+&aqs=chrome.0.69i59j69i61.8125j0j8&sourceid=chrome&ie=UTF-8
+～～～～～～～～～～～～～～～～～～
+
+
+
+
+
+●VIEW (CREATE VIEW)
+
+
+-- ok!
+-- create view use alias
+CREATE VIEW TEST AS
+SELECT ZW.CODE, ZW.E123, ZW.STATUS
+FROM ZE
+INNER JOIN ZW
+ON
+ ZE.CODE = ZW.CODE
+AND
+ ZE.E123 = ZW.E123
+
+
+～～～～～～～～～～～～～～～～～～
+
+●CASE SELECT
+
+
+-- ok!
+-- use alias
+SELECT ZW.CODE,  ZW.E123,  
+CASE ZW.E123
+ WHEN '002' THEN 'AAA'
+ WHEN '003' THEN 'BBB'
+ ELSE '???'
+END AS TEST
+FROM ZW
+
+
+●SELECT
+
+
+
+-- ok!
+SELECT ZW.CODE,  ZW.E123,  ZW.STATUS
+FROM ZW
+WHERE ZW.E123 = '002' OR ZW.E123 = '003'
+
+
+
+
+--SELECT INNER JOIN ok!
+--ZE.CODE=ZE.CODE 
+--AND
+--ZE.E123=ZW.E123
+SELECT ZW.CODE,  ZE.E123, ZW.E123,  ZW.STATUS
+FROM ZE
+INNER JOIN ZW
+ON
+ ZE.CODE = ZW.CODE
+AND
+ ZE.E123 = ZW.E123
+
+
+
+--SELECT , WHERE ok!
+--ZE.CODE=ZE.CODE 
+--AND
+--ZE.E123=ZW.E123
+SELECT ZW.CODE,  ZE.E123, ZW.E123,  ZW.STATUS
+FROM ZE, ZW
+WHERE
+ ZE.CODE = ZW.CODE
+AND
+ ZE.E123 = ZW.E123
+
+
+●UPDATE
+
+
+
+@@@ 02 ×
+--A and B are the same
+UPDATE ZW
+SET ZW.STATUS = 
+(
+CASE
+WHEN
+  ZE.CODE = ZW.CODE
+ AND
+  ZE.E123 = ZW.E123
+THEN 'same'
+ELSE 'not same'
+END
+)
+
+@@@ 01 ×
+--UPDATE and CASE
+--A and B are the same
+UPDATE ZW
+SET ZW.STATUS = 
+(
+CASE ZE.E123
+WHEN 
+ SELECT ZE.STATUS
+ FROM ZE,ZW
+ WHERE
+  ZE.CODE = ZW.CODE
+ AND
+  ZE.E123 = ZW.E123
+ THEN 'same'
+ELSE '...'
+END
+)
+
+
+
+--UPDATE ok!
+--A and B are the same
+UPDATE ZW
+SET ZW.STATUS = 
+(
+ SELECT ZE.STATUS
+ FROM ZE
+ WHERE
+  ZE.CODE = ZW.CODE
+ AND
+  ZE.E123 = ZW.E123
+)
+
+
+
+
+
+
+--UPDATE
+--Set all STATUS is test
+UPDATE ZW
+SET STATUS = 'TEST'
+
+
+--UPDATE
+--Delete all ZW.STATUS
+UPDATE ZW
+SET STATUS = NULL
+
+
+～～～～～～～～～～～～～～～～～～
+
+●メモ
+
+UPDATE 
+ テーブルB 
+INNER JOIN ON テーブルA.a=テーブルB.a 
+SET
+ テーブルB.B='ア'
+ WHERE (テーブルA.b='ア' AND テーブルB.b='イ');
+
+
+
+
+UPDATE テーブルB
+ SET テーブルB.B='ア'
+ WHERE (テーブルB.a = (Select テーブルA.a From テーブルA where テーブルA.b='ア') as a)AND テーブルB.b='イ';
+
+
+
+
+
