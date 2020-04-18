@@ -1,3 +1,124 @@
+●テーブル確認、セット用
+--Set all STATUS and DELETE
+
+UPDATE ZW SET STATUS = 'TEST';
+
+UPDATE ZW SET status = NULL;
+
+実行結果確認
+-- DISPLY
+
+SELECT * FROM ZW;
+
+
+
+
+●UPDATE用
+
+##################
+#　実際の実行用　#
+##################
+
+＊　２－１
+UPDATE ZW
+SET ZW.STATUS = (
+SELECT TEST.STATUS
+FROM TEST
+WHERE
+ TEST.CODE = ZW.CODE AND TEST.E123 = ZW.E123
+)
+WHERE E123 >= '003';
+
+＊　２－２ ZW.E123 = 002
+UPDATE ZW
+SET ZW.STATUS = 'null'
+WHERE
+ ZW.STATUS IS NULL;
+
+
+＊　２－３ ZW.STATUS = NULL
+UPDATE ZW
+SET ZW.STATUS = 'SHIP'
+WHERE
+ ZW.E123 = '002';
+
+
+##################
+
+
+
+--UPDATE and CASE
+--A and B are the same
+
+
+-- SELECT ZW.CODE, 
+--  CASE 
+--   WHEN ZE.CODE=ZW.CODE AND ZE.E123=ZW.E123 THEN 'a'
+--   ELSE 'bbb'
+--   END AS aaa
+-- FROM ZE, ZW;
+
+
+--EXISTS(
+--SELECT ZE.STATUS
+ --FROM ZE, ZW
+ --WHERE ZE.CODE = ZW.CODE AND ZE.E123 = ZW.E123
+--) 
+
+
+
+
+-- GOOD! 02
+UPDATE ZW
+SET ZW.STATUS = (
+SELECT TEST.STATUS
+FROM TEST
+WHERE
+ TEST.CODE = ZW.CODE
+ AND
+ TEST.E123 = ZW.E123
+)
+WHERE E123 >= '003';
+
+
+
+
+●CASE使用　→でも　ダメ
+
+-- NO GOOD  03 VALUE IS ...違う値が入ってしまう。。。
+UPDATE ZW
+SET ZW.STATUS = (
+CASE WHEN
+  EXISTS (SELECT TEST.CODE, TEST.STATUS
+  FROM TEST, ZW
+  WHERE
+  TEST.CODE = ZW.CODE
+  )
+  THEN 'BBB'
+  ELSE 'A'
+END
+);
+
+
+
+
+
+
+
+～～～～～～～～～～～～～～～
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 RDBで動的検索条件が必要な場合、動的SQLを利用すべき理由
 https://www.nuits.jp/entry/2017/11/26/180319
