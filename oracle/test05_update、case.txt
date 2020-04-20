@@ -1,3 +1,17 @@
+DBeverの追加使い方
+
+
+SQLエディタ
+
+各ページ毎に複数のSQLを記述出来る
+
+空白行において右△（再生）を押した場合は　→空白のクエリ　となる
+実行されるSQLにカーソルを持ってきてから実行する
+
+
+
+
+
 ●テーブル確認、セット用
 --Set all STATUS and DELETE
 
@@ -25,7 +39,9 @@ SET ZW.STATUS = (
 SELECT TEST.STATUS
 FROM TEST
 WHERE
- TEST.CODE = ZW.CODE AND TEST.E123 = ZW.E123
+ TEST.CODE = ZW.CODE 
+AND
+ TEST.E123 = ZW.E123
 )
 WHERE E123 >= '003';
 
@@ -44,6 +60,31 @@ WHERE
 
 
 ##################
+
+
+
+●CASE、UPDATE　OK!
+
+
+
+UPDATE ZW
+SET ZW.STATUS = (
+SELECT ZW.E123
+FROM ZE  -- ←ここに　「,ZW」を書くとだめ　×単一行複問い合わせにより2つ以上の行が戻されます
+WHERE
+ ZE.CODE = ZW.CODE
+AND
+ ZE.E123 = ZW.E123
+ )
+ WHERE ZW.E123 IN 　　--　以降が無くてもOK！
+(
+SELECT ZW.E123
+FROM ZE
+WHERE
+ ZE.CODE = ZW.CODE
+AND
+ ZE.E123 = ZW.E123
+) ;
 
 
 
@@ -83,6 +124,28 @@ WHERE E123 >= '003';
 
 
 
+●CASE　UPDATE　実行結果が想定外
+
+
+
+UPDATE ZW
+SET ZW.STATUS = (
+CASE WHEN
+  EXISTS (SELECT TEST.STATUS
+  FROM TEST, ZW
+  WHERE
+  TEST.CODE = ZW.CODE
+  )
+  THEN 'same04'
+  ELSE 'A'
+END
+)WHERE EXISTS (SELECT TEST.STATUS
+  FROM TEST, ZW
+  WHERE
+  TEST.CODE = ZW.CODE
+  );
+
+
 ●CASE使用　→でも　ダメ
 
 -- NO GOOD  03 VALUE IS ...違う値が入ってしまう。。。
@@ -102,8 +165,86 @@ END
 
 
 
+●CASE練習
 
 
+
+UPDATE ZW
+SET ZW.STATUS = 'D' 
+WHERE ZW.E123 IN (
+SELECT ZW.E123
+FROM ZE, ZW
+WHERE
+ ZE.CODE = ZW.CODE
+AND
+ ZE.E123 = ZW.E123
+) 
+
+
+
+SELECT ZW.CODE, 
+ CASE 
+  WHEN ZW.CODE='aaa' THEN 'a'
+  ELSE 'bbb'
+  END AS TEST
+FROM ZW;
+
+↑↓　同じ内容　CASEの後にあるかないか
+
+SELECT ZW.CODE, 
+ CASE ZW.CODE
+  WHEN 'aaa' THEN 'a'
+  ELSE 'bbb'
+  END AS TEST
+FROM ZW;
+
+
+
+
+
+
+●CASE　ダメ
+
+
+×　全部が'd'になってしまった
+
+UPDATE ZW
+SET ZW.STATUS =
+ (
+ CASE
+ WHEN EXISTS(
+ SELECT * 
+ FROM ZE,ZW
+ WHERE
+ ZE.E123 = ZW.E123
+
+ )THEN  'd'
+  ELSE '___'
+END
+ )
+ WHERE EXISTS(　--　←　これが有っても無くても同じ
+ SELECT * 
+ FROM ZE,ZW
+ WHERE
+ ZE.E123 = ZW.E123
+
+ )
+
+
+
+UPDATE ZW
+SET STATUS = (
+CASE
+ WHEN 
+ SELECT ZE.STATUS
+ FROM ZE, ZW
+ WHERE
+   ZE.CODE = ZW.CODE AND ZE.E123 = ZW.E123 THEN 'bbb'
+   ELSE 'a'
+END
+)
+
+～～～～～～～～～～～～～～～
 
 ～～～～～～～～～～～～～～～
 
