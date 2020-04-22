@@ -1,3 +1,15 @@
+#!/bin/sh
+
+if [ "$(ls /hoge/file_*)" != '' ]; then
+  echo 'FOUND'
+else
+  echo 'NOT FOUND'
+fi
+
+
+
+
+
 catalina.outの出力先変更
 https://qiita.com/hidekatsu-izuno/items/ab604b6c764b5b5a86ed
 
