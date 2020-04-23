@@ -1,3 +1,79 @@
+
+シェルスクリプト
+
+#!/bin/bash
+
+exit 0
+
+
+
+
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+＝　★★★
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+
+#!/bin/bash
+
+
+FILE_NAME=~/test/1*.txt
+
+# パス指定なし
+# FILE_NUM=$(ls -1U 1*.txt | wc -l)
+
+# パス指定あり
+# FILE_NUM=$(ls -1U ~/test/1*.txt | wc -l)
+
+# ファイル名の変数使用
+FILE_NUM=$(ls -1U $FILE_NAME | wc -l)
+
+echo $FILE_NUM
+
+if [ $FILE_NUM = "1" ]
+then
+        echo "OK"
+else
+        echo "No..."
+fi
+
+exit 0
+
+
+
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+■shellスクリプト
+
+
+
+
+・ファイル数
+ls -1U | wc -l
+
+解説：
+　lsのオプション
+　　1：1列に並べる
+　　U：ソート不要（高速化）
+
+  wc：行数を数える
+
+
+・ファイル数（ワイルドカード使用）
+ls -1U *.txt | wc -l
+
+
+どちらの記述でもオケ！
+FILE_NUM=`ls -1U *.txt | wc -l`
+FILE_NUM=$(ls -1U *.txt | wc -l)
+×　FILE_NUM=ls -1U *.txt | wc -l　←くくってないからダメ
+×　FILE_NUM = $(ls -1U *.txt | wc -l) ←「=（イコール）」前後の空白ダメ
+echo $FILE_NUM
+
+
+
+
+
+
+・ファイル検索
 #!/bin/sh
 
 if [ "$(ls /hoge/file_*)" != '' ]; then
@@ -9,40 +85,134 @@ fi
 
 
 
-
-catalina.outの出力先変更
-https://qiita.com/hidekatsu-izuno/items/ab604b6c764b5b5a86ed
-
-ログファイル	出力内容	設定箇所
-catalina.out6	標準出力(catalina.logの内容を含む)＋標準エラー出力	bin/catalina.sh
-catalina.YYYY-MM-DD.log	Tomcat自体のログ	logging.properties
-localhost.YYYY-MM-DD.log	ホスト共通の ServletContext#log	conf/logging.properties
-manager.YYYY-MM-DD.log	manager webapp の ServletContext#log	conf/logging.properties
-host-manager.YYYY-MM-DD.log	host-manager webapp の ServletContext#log	conf/logging.properties
-localhost_access_log.YYYY-MM-DD.txt	ホスト共通の アクセスログ	conf/server.xml
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+■shellスクリプト　書式
 
 
 
-●telnet　で接続
 
-・エラー
-Trying 127.0.1.1...
-telnet: Unable to connect to remote host: Connection refused
+●書式
+※先頭に全角空白ダメ
 
-・エラー
-Trying 127.0.0.1...
-Connected to localhost.
-Escape character is '^]'.
-500 OOPS: priv_sock_get_cmd
-Connection closed by foreign host.
+・変数（小文字でもオケ）{}　があってもなくてもオケｂ
+MESSAGE="World"
+echo Hello ${MESSAGE}!
+echo Hello ${MESSAGE}${MESSAGE}
+echo Hello ${MESSAGE}　${MESSAGE}
+echo Hello $MESSAGE
 
-
-
-●shell
+・コマンド置換
+$(コマンド) または `コマンド`
 
 
 
-●shellスクリプトの実行
+・書式
+(date "+%Y/%m/%d")
+date "+%Y/%m/%d"
+×　date"+%Y/%m/%d" 　dateの後にすきまがないから
+
+echo "今日は、`date +%m月%d日`です"
+×　echo "今日は、`date+%m月%d日`です"　dateの後に隙間がないから
+
+
+・バッククォート：shift + @
+
+
+・シングルクォートで囲む（単なる文字列）※入れ子ダメ
+echo '$Hello ${message}!'
+echo '$(date "+%Y/%m/%d")'
+
+
+
+--------------------------------------------------
+
+・ダブルクォートで囲む（展開される）
+
+message="World"
+echo "Hello ${message}!"
+　→Hello World
+
+echo $(date "+%Y/%m/%d")
+(date "+%Y/%m/%d")
+date "+%Y/%m/%d"
+date +%Y/%m/%d
+　→2019/04/28
+
+×　"date +%Y/%m/%d"
+×　$(date "+%Y/%m/%d")
+×　echo `$(date "+%Y/%m/%d")`
+×　echo "$(date `+%Y/%m/%d`)"
+
+
+
+--------------------------------------------------
+
+#!/bin/sh
+DATETIME=`date +%Y%m%d_%H%M%S_%3N`
+echo $DATETIME
+
+echo `date +%Y%m%d_%H%M%S_%3N`
+×　echo 'date +%Y%m%d_%H%M%S_%3N'
+×　echo "date +%Y%m%d_%H%M%S_%3N"
+×　echo "date"+`%Y年%m月%d日`
+
+echo `date +%Y%m%d_%H%M%S`
+echo `date +%Y%m%d`
+echo `date +%Y年%m月%d日`
+
+--------------------------------------------------
+
+
+
+・エスケープキャラクター
+echo "Hello \${message}!"
+
+
+
+・ループ
+
+i=0
+while [ $i -lt 3 ]
+do
+  echo $i
+  ((i++))
+done
+
+　→0
+　　1
+　　2
+
+
+×　i=0; while [ $i -lt 3 ]; do; echo $i; ((i++)); done
+
+××××××××××××××××××××××××××××××
+i=0
+while [ $i -lt 3 ]
+do
+  echo $i
+  (i++)　←危険！！！　無限ループ
+done
+××××××××××××××××××××××××××××××
+
+××××××××××××××××××××××××××××××
+i=0
+while [ $i -lt 3 ]
+do
+  echo $i
+  i++　←危険！！！　無限ループ
+done
+××××××××××××××××××××××××××××××
+
+
+
+
+
+
+
+
+
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+■shellスクリプトの実行
 
 sh test.sh
 bash test.sh
@@ -54,29 +224,31 @@ sudo sh test.sh
 
 sudo bash test.sh
 
+
 （●実行権限を付けて実行）
 chmod +x test.sh
 ./test.sh
 
 
+●自分のshell確認
+echo $SHELL
+　/bin/bash
 
-#!/bin/sh
-DATETIME=`date +%Y%m%d_%H%M%S_%3N`
-echo $DATETIME
-
-
-echo `date +%Y%m%d_%H%M%S_%3N`
-×　echo 'date +%Y%m%d_%H%M%S_%3N'
-×　echo "date +%Y%m%d_%H%M%S_%3N"
-×　echo "date"+`%Y年%m月%d日`
-
-echo `date +%Y%m%d_%H%M%S`
-echo `date +%Y%m%d`
-echo `date +%Y年%m月%d日`
+●バージョン
+echo $BASH_VERSION
 
 
 
 
+
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+■表示系
+
+
+
+ls -al
+cal　カレンダー
+date　日付
 
 
 ●コマンドのパスを表示
@@ -100,8 +272,95 @@ cat example.html | more
 
 
 
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+■パッケージ
+
+
+
+・インストールされたパッケージ
+$ dpkg -l
+
+・特定のパッケージだけ確認
+$ dpkg -l | grep mysql
+dpkg -l  | grep telnetd
+
+
+・アップグレード
+sudo do-release-upgrade
+sudo apt-get update
+sudo apt update
+
+
+
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+■接続系
+
+
+●telnet　で接続
+
+・エラー
+Trying 127.0.1.1...
+telnet: Unable to connect to remote host: Connection refused
+
+・エラー
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+500 OOPS: priv_sock_get_cmd
+Connection closed by foreign host.
+
+
+
+●FTP
+・インストール
+sudo apt install vsftpd
+
+・バージョン確認
+vsftpd -v
+
+・起動
+sudo service vsftpd start
+
+sudo service vsftpd status
+sudo service vsftpd restart
+
+
+　・出来ないorz
+telnet localhost **
+telnet 192.*.*.* *
+telnet **** **
+telnet 192.*.*.* **
+
+
+
+
+
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+■解凍・圧縮
+
+
+
 ●tar 解凍・圧縮
 https://webkaru.net/linux/tar-command/
+
+
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+■catalina.outの出力先変更
+https://qiita.com/hidekatsu-izuno/items/ab604b6c764b5b5a86ed
+
+ログファイル	出力内容	設定箇所
+catalina.out6	標準出力(catalina.logの内容を含む)＋標準エラー出力	bin/catalina.sh
+catalina.YYYY-MM-DD.log	Tomcat自体のログ	logging.properties
+localhost.YYYY-MM-DD.log	ホスト共通の ServletContext#log	conf/logging.properties
+manager.YYYY-MM-DD.log	manager webapp の ServletContext#log	conf/logging.properties
+host-manager.YYYY-MM-DD.log	host-manager webapp の ServletContext#log	conf/logging.properties
+localhost_access_log.YYYY-MM-DD.txt	ホスト共通の アクセスログ	conf/server.xml
+
+
+
+
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+■その他
 
 ●UNIX　Windows　コマンド対応表
 https://qiita.com/asmin/items/d53e71ed98a377ca7823
