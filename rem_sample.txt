@@ -3,6 +3,8 @@
  * JavaでCSVファイルの読み込みを行う
  */
 
+
+
 package read_csv;
 
 import java.io.BufferedReader;
@@ -23,7 +25,11 @@ public class Sample {
 				}
 				//				if ( ! "rem".equals(data[0])) {
 				if (!data[0].contains("rem") && !data[0].contains("//")) { // ”rem”が含まれている or ”//”だったら読み込まない
-					for (int i = 0; i < 3; i++) {
+
+
+
+//                                                         ↓　「3」で固定してるから例外発生！　注意
+ 					for (int i = 0; i < 3; i++) {
 						/*
 						  						if (i == 2 && "000".equals(data[i])) {
 													System.out.print("STATUS_000!");
