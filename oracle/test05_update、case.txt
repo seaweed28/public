@@ -1,3 +1,31 @@
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+＝　★★★
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+
+
+
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+＝　複数テーブル参照でのUPDATE
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+
+
+
+https://www.google.com/search?q=sql+update+case+%E8%A4%87%E6%95%B0%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB&ei=2D6gXquQIpao-QaGspT4Dw&start=10&sa=N&ved=2ahUKEwir3M-3ivzoAhUWVN4KHQYZBf8Q8NMDegQIDBBB&biw=1141&bih=652
+
+★
+https://fyts.hatenadiary.org/entry/20080922/select
+
+
+http://okbabybaby.blog77.fc2.com/blog-entry-105.html
+
+
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+
+
+
 DBeverの追加使い方
 
 
@@ -244,10 +272,10 @@ CASE
 END
 )
 
-～～～～～～～～～～～～～～～
 
-～～～～～～～～～～～～～～～
 
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
 
 
 
@@ -268,7 +296,8 @@ https://www.nuits.jp/entry/2017/11/26/180319
 Google先生
 SQL CASE SELECT
 https://www.google.com/search?q=SQL+CASE+SELECT&oq=sql+case+select+&aqs=chrome.0.69i59j69i61.8125j0j8&sourceid=chrome&ie=UTF-8
-～～～～～～～～～～～～～～～～～～
+
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
 
 
 
@@ -289,7 +318,7 @@ AND
  ZE.E123 = ZW.E123
 
 
-～～～～～～～～～～～～～～～～～～
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
 
 ●CASE SELECT
 
@@ -413,7 +442,7 @@ UPDATE ZW
 SET STATUS = NULL
 
 
-～～～～～～～～～～～～～～～～～～
+～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～
 
 ●メモ
 
