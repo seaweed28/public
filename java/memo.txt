@@ -1,0 +1,5 @@
+URLが正しいのに
+
+https://oshiete.goo.ne.jp/qa/2942294.html?from=recommend
+(Tomcatインストールフォルダ)\conf\Catalina\localhostフォルダ内に、eclipseで使用しているproject名のxmlファイルを作成することで復旧しました。
+
