@@ -1,0 +1,43 @@
+https://oracle-chokotto.com/ora_lsnrcomm.html
+リスナー　を使って接続
+
+リモート接続
+
+リスナーの表示　コマンドプロンプト
+lsnrctl
+
+status
+リスナーの情報を表示する
+（例）lsnrctl status [リスナー名]
+
+
+SET CURRENT_LISTENER	カレントのリスナーを設定する
+
+
+
+
+
+接続要求タイプ	デフォルトのTCPポート番号	用途
+データベース
+
+1521
+
+Oracle Netを使用したTCP/IP経由のデータベース接続。次の例があります。
+
+SQLコマンドラインからのリモート接続。
+
+JDBCとの接続を行うJavaアプリケーションからのリモート接続。
+
+
+
+
+
+HTTP
+
+8080
+
+HTTPプロトコルを使用したデータベース接続。次の例があります。
+
+ローカル・システムに作成したOracle Application Expressアプリケーションへのアクセス。
+
+Oracle XML DBリポジトリへのアクセス。Oracle XML DBは、高パフォーマンスのネイティブXMLの格納と取得を提供するOracle Database XEの機能です。Oracle XML DBリポジトリを介して、ユーザーは、HTTPおよびWebDAV (Webフォルダ)プロトコルを使用してXMLデータにアクセスできます。詳細は、『Oracle XML DB開発者ガイド』を参照してください。
