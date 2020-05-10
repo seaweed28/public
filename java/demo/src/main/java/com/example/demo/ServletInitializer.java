@@ -36,7 +36,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 		try {
 			System.out.println("データベースに接続します...");
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "test", "seiten10");
+			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "＠＠＠", "＠＠＠");
 			// jdbc:oracle:thin:@（ホスト名）:（ポート番号）:（接続するデータベースのSID)
 			/*
 						Connection conn = DriverManager.getConnection(url, user, password);
