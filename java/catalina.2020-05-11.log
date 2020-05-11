@@ -1,0 +1,72 @@
+11-May-2020 21:47:58.136 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log Serverのバージョン名：Apache Tomcat/9.0.31
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log Server ビルド:          Feb 5 2020 19:32:12 UTC
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log サーバーのバージョン番号：9.0.31.0
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log OS 名:               Windows 10
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log OS バージョン:            10.0
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log アーキテクチャ:          amd64
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             C:\Program Files\Java\jdk1.8.0_251\jre
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM バージョン:           1.8.0_251-b08
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM ベンダ：            Oracle Corporation
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         C:\apache-tomcat-9.0.31
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         C:\apache-tomcat-9.0.31
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log コマンドライン引数：-Djava.util.logging.config.file=C:\apache-tomcat-9.0.31\conf\logging.properties
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log コマンドライン引数：-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log コマンドライン引数：-Djdk.tls.ephemeralDHKeySize=2048
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log コマンドライン引数：-Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log コマンドライン引数：-Dignore.endorsed.dirs=
+11-May-2020 21:47:58.167 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log コマンドライン引数：-Dcatalina.base=C:\apache-tomcat-9.0.31
+11-May-2020 21:47:58.182 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log コマンドライン引数：-Dcatalina.home=C:\apache-tomcat-9.0.31
+11-May-2020 21:47:58.182 情報 [main] org.apache.catalina.startup.VersionLoggerListener.log コマンドライン引数：-Djava.io.tmpdir=C:\apache-tomcat-9.0.31\temp
+11-May-2020 21:47:58.182 情報 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APRバージョン[1.7.0]を使用してAPRベースのApache Tomcatネイティブライブラリ[1.2.23]をロードしました。
+11-May-2020 21:47:58.182 情報 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR機能：IPv6 [true]、sendfile true]、受け入れフィルタ[false]、ランダム[true]
+11-May-2020 21:47:58.182 情報 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR/OpenSSL設定：useAprConnector [false]、useOpenSSL [true]
+11-May-2020 21:47:58.182 情報 [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSLは[OpenSSL 1.1.1c  28 May 2019]を正常に初期化しました。
+11-May-2020 21:47:58.854 情報 [main] org.apache.coyote.AbstractProtocol.init プロトコルハンドラ ["http-nio-8080"] を初期化します。
+11-May-2020 21:47:58.963 情報 [main] org.apache.coyote.AbstractProtocol.init プロトコルハンドラ ["ajp-nio-0:0:0:0:0:0:0:1-8009"] を初期化します。
+11-May-2020 21:47:58.979 情報 [main] org.apache.catalina.startup.Catalina.load サーバーの初期化 [1,674]ms
+11-May-2020 21:47:59.010 情報 [main] org.apache.catalina.core.StandardService.startInternal サービス [Catalina] を起動します
+11-May-2020 21:47:59.010 情報 [main] org.apache.catalina.core.StandardEngine.startInternal サーブレットエンジンの起動：[Apache Tomcat/9.0.31]
+11-May-2020 21:47:59.026 情報 [main] org.apache.catalina.startup.HostConfig.deployWAR Webアプリケーションアーカイブ [C:\apache-tomcat-9.0.31\webapps\demo.war] を配備します
+11-May-2020 21:48:02.275 情報 [main] org.apache.jasper.servlet.TldScanner.scanJars 少なくとも1つのJARが、まだTLDを含んでいないTLDについてスキャンされました。 スキャンしたが、そこにTLDが見つからなかったJARの完全なリストについては、このロガーのデバッグログを有効にしてください。 スキャン中に不要なJARをスキップすると、起動時間とJSPのコンパイル時間が改善されます。
+11-May-2020 21:48:04.743 情報 [main] org.apache.catalina.startup.HostConfig.deployWAR Web アプリケーションアーカイブ [C:\apache-tomcat-9.0.31\webapps\demo.war] の配置は [5,717] ms で完了しました。
+11-May-2020 21:48:04.775 情報 [main] org.apache.catalina.startup.HostConfig.deployWAR Webアプリケーションアーカイブ [C:\apache-tomcat-9.0.31\webapps\DynamicWebSample01.war] を配備します
+11-May-2020 21:48:04.821 情報 [main] org.apache.catalina.startup.HostConfig.deployWAR Web アプリケーションアーカイブ [C:\apache-tomcat-9.0.31\webapps\DynamicWebSample01.war] の配置は [46] ms で完了しました。
+11-May-2020 21:48:04.821 情報 [main] org.apache.catalina.startup.HostConfig.deployDirectory Webアプリケーションディレクトリ [C:\apache-tomcat-9.0.31\webapps\docs] を配備します
+11-May-2020 21:48:04.837 情報 [main] org.apache.catalina.startup.HostConfig.deployDirectory ディレクトリ [C:\apache-tomcat-9.0.31\webapps\docs] の Web アプリケーションの配置は [16] ms で完了しました。
+11-May-2020 21:48:04.837 情報 [main] org.apache.catalina.startup.HostConfig.deployDirectory Webアプリケーションディレクトリ [C:\apache-tomcat-9.0.31\webapps\examples] を配備します
+11-May-2020 21:48:05.899 情報 [main] org.apache.catalina.startup.HostConfig.deployDirectory ディレクトリ [C:\apache-tomcat-9.0.31\webapps\examples] の Web アプリケーションの配置は [1,062] ms で完了しました。
+11-May-2020 21:48:05.899 情報 [main] org.apache.catalina.startup.HostConfig.deployDirectory Webアプリケーションディレクトリ [C:\apache-tomcat-9.0.31\webapps\host-manager] を配備します
+11-May-2020 21:48:05.946 情報 [main] org.apache.catalina.startup.HostConfig.deployDirectory ディレクトリ [C:\apache-tomcat-9.0.31\webapps\host-manager] の Web アプリケーションの配置は [47] ms で完了しました。
+11-May-2020 21:48:05.946 情報 [main] org.apache.catalina.startup.HostConfig.deployDirectory Webアプリケーションディレクトリ [C:\apache-tomcat-9.0.31\webapps\manager] を配備します
+11-May-2020 21:48:05.977 情報 [main] org.apache.catalina.startup.HostConfig.deployDirectory ディレクトリ [C:\apache-tomcat-9.0.31\webapps\manager] の Web アプリケーションの配置は [31] ms で完了しました。
+11-May-2020 21:48:05.977 情報 [main] org.apache.catalina.startup.HostConfig.deployDirectory Webアプリケーションディレクトリ [C:\apache-tomcat-9.0.31\webapps\ROOT] を配備します
+11-May-2020 21:48:06.009 情報 [main] org.apache.catalina.startup.HostConfig.deployDirectory ディレクトリ [C:\apache-tomcat-9.0.31\webapps\ROOT] の Web アプリケーションの配置は [32] ms で完了しました。
+11-May-2020 21:48:06.009 情報 [main] org.apache.coyote.AbstractProtocol.start プロトコルハンドラー ["http-nio-8080"] を開始しました。
+11-May-2020 21:48:06.024 重大 [main] org.apache.catalina.util.LifecycleBase.handleSubClassException コンポーネント[Connector[AJP/1.3-8009]]の開始に失敗しました。
+	org.apache.catalina.LifecycleException: プロトコルハンドラの起動に失敗しました
+		at org.apache.catalina.connector.Connector.startInternal(Connector.java:1038)
+		at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+		at org.apache.catalina.core.StandardService.startInternal(StandardService.java:438)
+		at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+		at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:930)
+		at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+		at org.apache.catalina.startup.Catalina.start(Catalina.java:633)
+		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+		at java.lang.reflect.Method.invoke(Method.java:498)
+		at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:343)
+		at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:474)
+	Caused by: java.lang.IllegalArgumentException: The AJP Connector is configured with secretRequired="true" but the secret attribute is either null or "". This combination is not valid.
+		at org.apache.coyote.ajp.AbstractAjpProtocol.start(AbstractAjpProtocol.java:264)
+		at org.apache.catalina.connector.Connector.startInternal(Connector.java:1035)
+		... 12 more
+11-May-2020 21:48:06.024 情報 [main] org.apache.catalina.startup.Catalina.start サーバーの起動 [7,046]ms
+11-May-2020 21:52:21.135 情報 [main] org.apache.catalina.core.StandardServer.await 有効なシャットダウンコマンドがシャットダウンポート経由で受信されました。 サーバーインスタンスを停止します。
+11-May-2020 21:52:21.135 情報 [main] org.apache.coyote.AbstractProtocol.pause ProtocolHandler ["http-nio-8080"] を一時停止します。
+11-May-2020 21:52:21.188 情報 [main] org.apache.coyote.AbstractProtocol.pause ProtocolHandler ["ajp-nio-0:0:0:0:0:0:0:1-8009"] を一時停止します。
+11-May-2020 21:52:21.188 情報 [main] org.apache.catalina.core.StandardService.stopInternal サービス [Catalina] を停止します
+11-May-2020 21:52:21.954 情報 [main] org.apache.coyote.AbstractProtocol.stop ProtocolHandler ["http-nio-8080"]の停止中
+11-May-2020 21:52:21.954 情報 [main] org.apache.coyote.AbstractProtocol.destroy ProtocolHandler ["http-nio-8080"] を破棄します。
+11-May-2020 21:52:21.954 情報 [main] org.apache.coyote.AbstractProtocol.stop ProtocolHandler ["ajp-nio-0:0:0:0:0:0:0:1-8009"]の停止中
+11-May-2020 21:52:21.954 情報 [main] org.apache.coyote.AbstractProtocol.destroy ProtocolHandler ["ajp-nio-0:0:0:0:0:0:0:1-8009"] を破棄します。
