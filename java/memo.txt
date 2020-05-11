@@ -1,5 +1,14 @@
-URLが正しいのに
+C:\apache-tomcat-9.0.31\bin>startup
+Using CATALINA_BASE:   "C:\apache-tomcat-9.0.31"
+Using CATALINA_HOME:   "C:\apache-tomcat-9.0.31"
+Using CATALINA_TMPDIR: "C:\apache-tomcat-9.0.31\temp"
+Using JRE_HOME:        "C:\Program Files\Java\jdk1.8.0_251\jre"
+Using CLASSPATH:       "C:\apache-tomcat-9.0.31\bin\bootstrap.jar;C:\apache-tomcat-9.0.31\bin\tomcat-juli.jar"
 
-https://oshiete.goo.ne.jp/qa/2942294.html?from=recommend
-(Tomcatインストールフォルダ)\conf\Catalina\localhostフォルダ内に、eclipseで使用しているproject名のxmlファイルを作成することで復旧しました。
 
+C:\apache-tomcat-9.0.31\bin>shutdown
+Using CATALINA_BASE:   "C:\apache-tomcat-9.0.31"
+Using CATALINA_HOME:   "C:\apache-tomcat-9.0.31"
+Using CATALINA_TMPDIR: "C:\apache-tomcat-9.0.31\temp"
+Using JRE_HOME:        "C:\Program Files\Java\jdk1.8.0_251\jre"
+Using CLASSPATH:       "C:\apache-tomcat-9.0.31\bin\bootstrap.jar;C:\apache-tomcat-9.0.31\bin\tomcat-juli.jar"
