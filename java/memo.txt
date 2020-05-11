@@ -12,3 +12,21 @@ Using CATALINA_HOME:   "C:\apache-tomcat-9.0.31"
 Using CATALINA_TMPDIR: "C:\apache-tomcat-9.0.31\temp"
 Using JRE_HOME:        "C:\Program Files\Java\jdk1.8.0_251\jre"
 Using CLASSPATH:       "C:\apache-tomcat-9.0.31\bin\bootstrap.jar;C:\apache-tomcat-9.0.31\bin\tomcat-juli.jar"
+
+
+
+Javaのバージョン確認
+javac -version
+
+
+Tomcatアプリケーションマネージャーの設定方法
+https://eng-entrance.com/java-servlet-tomcat-install
+
+
+
+★JDBCクラスパス
+https://support.createwebflow.jp/manual/files/platform/update/forV4/tomcat85-jdk11/update/windows.html#%E3%82%A2%E3%83%83%E3%83%97%E3%83%87%E3%83%BC%E3%83%88
+
+
+META-INF内　context.xml
+https://access.redhat.com/documentation/ja-jp/red_hat_jboss_web_server/1.0/html-single/installation_guide/index
