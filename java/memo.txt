@@ -1,3 +1,8 @@
+https://qiita.com/ynxx/items/9ab3a51c04a4878c2dfa
+setenv.batの設定 による環境変数系の設定
+
+
+
 C:\apache-tomcat-9.0.31\bin>startup
 Using CATALINA_BASE:   "C:\apache-tomcat-9.0.31"
 Using CATALINA_HOME:   "C:\apache-tomcat-9.0.31"
